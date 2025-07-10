@@ -89,7 +89,7 @@ if not st.session_state.finished:
             if st.session_state.current_q >= total_q:
                 st.session_state.finished = True
 
-            st.experimental_rerun()
+            st.rerun()
 
 # ---------- 結果頁面 ----------
 else:
