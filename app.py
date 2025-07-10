@@ -45,8 +45,8 @@ def reset_quiz():
     st.session_state.answered    = False
 
 # ---------- 頁面設定 ----------
-st.set_page_config(page_title="測驗系統", page_icon="🧠")
-st.title("🧠 隨機出題測驗系統")
+st.set_page_config(page_title="測驗系統", page_icon="📝")
+st.title("📝 iPAS+AI應用規劃師初級能力鑑定練習題庫")
 
 # ---------- 測驗中 ----------
 if not st.session_state.finished:
@@ -55,7 +55,7 @@ if not st.session_state.finished:
     total_q   = len(questions)
     q         = questions[q_idx]
 
-    st.markdown(f"### 📘 第 {q_idx + 1} 題 / 共 {total_q} 題")
+    st.markdown(f"### 🖊️ 第 {q_idx + 1} 題 / 共 {total_q} 題")
     st.progress(q_idx / total_q, text=f"進度：{q_idx}/{total_q}")
 
     # 題目 & 選項
