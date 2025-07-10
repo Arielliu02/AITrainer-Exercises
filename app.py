@@ -45,7 +45,7 @@ if not st.session_state.finished:
     st.progress(current_q / total_questions)  # ✅ 進度條
 
     st.markdown(f"**{q['question']}**")
-    options = [q['A'], q['B'], q['C'], q['D']]
+    options = [q['option1'], q['option2'], q['option3'], q['option4']]
     user_answer = st.radio("請選擇答案：", options, key=current_q)
 
     if st.button("提交答案"):
