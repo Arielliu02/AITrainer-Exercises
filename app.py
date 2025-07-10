@@ -45,8 +45,8 @@ def reset_quiz():
     st.session_state.answered    = False
 
 # ---------- 頁面設定 ----------
-st.set_page_config(page_title="測驗系統", page_icon="📝")
-st.title("📝 iPAS+AI應用規劃師初級題庫練習")
+st.set_page_config(page_title="測驗系統", page_icon="📚")
+st.title("📚 iPAS+AI應用規劃師初級題庫")
 
 # ---------- 測驗中 ----------
 if not st.session_state.finished:
