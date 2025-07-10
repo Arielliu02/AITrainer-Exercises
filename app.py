@@ -11,7 +11,7 @@ import random
 
 # ---------- 題庫讀取 ----------
 @st.cache_data
-def load_questions(path: str = "題庫.xlsx", n_questions: int = 50):
+def load_questions(path: str = "題庫.xlsx", n_questions: int = 50, seed: int | None = None):
     df = pd.read_excel(path)
 
     required_cols = {"question", "option1", "option2", "option3", "option4", "answer"}
@@ -20,8 +20,13 @@ def load_questions(path: str = "題庫.xlsx", n_questions: int = 50):
         st.stop()
 
     questions = df.to_dict(orient="records")
-    random.shuffle(questions)
-    return questions[:min(n_questions, len(questions))]
+    if seed is not None:
+        rnd = random.Random(seed)
+        rnd.shuffle(questions)
+    else:
+        random.shuffle(questions)
+
+    return questions[:min(n_questions, len(questions))]  
 
 # ---------- 初始化 ----------
 if "initialized" not in st.session_state:
@@ -36,7 +41,8 @@ if "initialized" not in st.session_state:
 
 # ---------- 重置 ----------
 def reset_quiz():
-    st.session_state.questions   = load_questions()
+    seed = random.randint(0, 999999)
+    st.session_state.questions   = load_questions(seed=seed)
     st.session_state.current_q   = 0
     st.session_state.score       = 0
     st.session_state.correct_cnt = 0
