@@ -30,7 +30,9 @@ def load_questions(path: str = "題庫.xlsx", n_questions: int = 50, seed: int |
 
 # ---------- 初始化 ----------
 if "initialized" not in st.session_state:
-    st.session_state.questions   = load_questions()
+    seed = random.randint(0, 999999)  
+    st.session_state.seed          = seed
+    st.session_state.questions     = load_questions(seed=seed)
     st.session_state.current_q   = 0
     st.session_state.score       = 0
     st.session_state.correct_cnt = 0
@@ -42,6 +44,7 @@ if "initialized" not in st.session_state:
 # ---------- 重置 ----------
 def reset_quiz():
     seed = random.randint(0, 999999)
+    st.session_state.seed = seed
     st.session_state.questions   = load_questions(seed=seed)
     st.session_state.current_q   = 0
     st.session_state.score       = 0
