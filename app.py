@@ -31,6 +31,7 @@ if "initialized" not in st.session_state:
     st.session_state.correct_cnt = 0
     st.session_state.finished    = False
     st.session_state.history     = []
+    st.session_state.answered    = False
     st.session_state.initialized = True
 
 # ---------- 重置 ----------
@@ -41,6 +42,7 @@ def reset_quiz():
     st.session_state.correct_cnt = 0
     st.session_state.finished    = False
     st.session_state.history     = []
+    st.session_state.answered    = False
 
 # ---------- 頁面設定 ----------
 st.set_page_config(page_title="測驗系統", page_icon="🧠")
@@ -61,14 +63,15 @@ if not st.session_state.finished:
     options = [q["option1"], q["option2"], q["option3"], q["option4"]]
     user_choice = st.radio("請選擇答案：", options, index=None, key=f"radio_{q_idx}")
 
-    if st.button("提交答案", key=f"submit_{q_idx}"):
+    # 提交答案
+    if st.button("提交答案", key=f"submit_{q_idx}") and not st.session_state.answered:
         if user_choice is None:
             st.warning("⚠️ 請先選擇一個選項！")
         else:
             correct_option = str(q["answer"]).strip()
             is_correct = (user_choice.strip() == correct_option)
 
-            # 顯示判斷結果
+            # 顯示回饋
             if is_correct:
                 st.success("✅ 答對了！")
                 st.session_state.score += 4
@@ -85,7 +88,14 @@ if not st.session_state.finished:
                 "是否正確": "✔️" if is_correct else "❌"
             })
 
+            st.session_state.answered = True
+
+    # 下一題按鈕
+    if st.session_state.answered:
+        if st.button("➡️ 下一題", key=f"next_{q_idx}"):
             st.session_state.current_q += 1
+            st.session_state.answered = False
+
             if st.session_state.current_q >= total_q:
                 st.session_state.finished = True
 
@@ -106,3 +116,4 @@ else:
 
     st.markdown("---")
     st.button("🔄 重新開始測驗", on_click=reset_quiz)
+
