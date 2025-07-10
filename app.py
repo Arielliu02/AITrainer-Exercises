@@ -9,9 +9,9 @@ import streamlit as st
 import pandas as pd
 import random
 
-st.set_page_config(page_title="50題測驗系統", layout="centered")
+st.set_page_config(page_title="📘 50 題測驗系統", layout="centered")
 
-# 讀取 Excel 並隨機抽 50 題
+# ✅ 讀取 Excel 題庫並隨機抽 50 題
 @st.cache_data
 def load_questions():
     df = pd.read_excel("題庫.xlsx").dropna()
@@ -25,23 +25,28 @@ def load_questions():
         })
     return questions
 
-# 初始化 session state
+# ✅ 初始化 session_state
 if "questions" not in st.session_state:
     st.session_state.questions = load_questions()
+if "current_q" not in st.session_state:
     st.session_state.current_q = 0
+if "correct" not in st.session_state:
     st.session_state.correct = 0
+if "score" not in st.session_state:
     st.session_state.score = 0
+if "finished" not in st.session_state:
     st.session_state.finished = False
+if "answered" not in st.session_state:
     st.session_state.answered = {}
 
-# 顯示單題（只能作答一次）
+# ✅ 顯示一題
 def show_question(q_idx):
     q = st.session_state.questions[q_idx]
     st.markdown(f"### 第 {q_idx + 1} 題 / 50")
     st.write(q["question"])
+
     key_choice = f"choice_{q_idx}"
 
-    # 顯示選項
     if q_idx not in st.session_state.answered:
         choice = st.radio("請選擇你的答案：", q["options"], key=key_choice)
         if st.button("提交答案", key=f"submit_{q_idx}"):
@@ -57,7 +62,7 @@ def show_question(q_idx):
     else:
         st.info("✅ 本題已作答，請進入下一題")
 
-# 測驗完成後顯示成績
+# ✅ 測驗結束
 def show_result():
     st.success("🎉 測驗完成！")
     st.metric("✅ 答對題數", f"{st.session_state.correct} / 50")
@@ -65,7 +70,7 @@ def show_result():
     if st.button("🔁 重新測驗"):
         reset()
 
-# 重置所有狀態
+# ✅ 重設狀態
 def reset():
     st.session_state.questions = load_questions()
     st.session_state.current_q = 0
@@ -75,7 +80,7 @@ def reset():
     st.session_state.answered = {}
     st.rerun()
 
-# 主程式
+# ✅ 主程式
 def main():
     st.title("📘 50 題單選練習測驗")
     st.caption("每題 4 分，滿分 200 分，答錯會顯示正確答案")
